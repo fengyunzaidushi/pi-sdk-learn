@@ -1,0 +1,32 @@
+{
+  "name": "pi-sdk-learn",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "start": "tsx s01_create_session/code.ts",
+    "start:s01": "tsx s01_create_session/code.ts",
+    "start:s02": "tsx s02_prompt_events/code.ts",
+    "start:s03": "tsx s03_tools/code.ts",
+    "start:s04": "tsx s04_model_runtime/code.ts",
+    "start:s05": "tsx s05_resources/code.ts",
+    "start:s06": "tsx s06_extensions/code.ts",
+    "start:s07": "tsx s07_sessions/code.ts",
+    "start:s08": "tsx s08_runtime/code.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "check:chapters": "node scripts/check-chapters.mjs",
+    "check": "npm run typecheck && npm run check:chapters"
+  },
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "0.85.1",
+    "typebox": "1.3.7"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.19",
+    "tsx": "4.22.1",
+    "typescript": "5.9.3"
+  }
+}
