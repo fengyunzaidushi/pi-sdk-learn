@@ -16,6 +16,11 @@
     "start:s06": "tsx s06_extensions/code.ts",
     "start:s07": "tsx s07_sessions/code.ts",
     "start:s08": "tsx s08_runtime/code.ts",
+    "start:s09": "tsx s09_skills/code.ts",
+    "start:s10": "tsx s10_prompt_templates/code.ts",
+    "start:s11": "tsx s11_auth/code.ts",
+    "start:s12": "tsx s12_settings/code.ts",
+    "start:s13": "tsx s13_full_control/code.ts",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "check:chapters": "node scripts/check-chapters.mjs",
     "check": "npm run typecheck && npm run check:chapters"

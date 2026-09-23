@@ -37,7 +37,7 @@
 5. 明确的验证命令和本章边界；
 6. 一个小练习，要求你改变行为而不是复制代码。
 
-章节代码默认使用真实模型。只有明确标记为结构实验的章节才不发送模型请求。运行会调用你当前 Pi 配置中的 provider，并可能产生费用；涉及工具的章节请在临时目录中运行。
+s01–s03 默认调用真实模型；s04–s13 默认是无需模型请求的结构实验，其中 s06、s09、s10 可显式传 `--run` 体验真实回合。真实请求会使用当前 Pi 配置中的 provider，可能产生费用；涉及文件工具的章节请在临时目录中运行。
 
 ## 前置条件
 
@@ -81,6 +81,29 @@ npx --no-install tsx .\s03_tools\code.ts
 | [s06](./s06_extensions/) | 扩展与自定义工具 | `extensionFactories`、`registerTool`、hooks | 可选 |
 | [s07](./s07_sessions/) | 会话持久化 | `SessionManager`、open、continue | 否 |
 | [s08](./s08_runtime/) | 会话运行时 | `AgentSessionRuntime`、new/switch | 否 |
+| [s09](./s09_skills/) | 技能加载 | 真实 `SKILL.md`、`additionalSkillPaths`、`/skill:name` | 默认否，`--run` 是 |
+| [s10](./s10_prompt_templates/) | 提示词模板 | Markdown 模板、参数替换、`promptTemplates` | 默认否，`--run` 是 |
+| [s11](./s11_auth/) | 认证边界 | 隔离的 `ModelRuntime`、环境变量覆盖 | 否 |
+| [s12](./s12_settings/) | 设置管理 | `SettingsManager.inMemory()`、override、reload | 否 |
+| [s13](./s13_full_control/) | 全量装配 | 自定义 `ResourceLoader`、显式服务组合 | 否 |
+
+源仓库 `packages/coding-agent/examples/sdk` 的 13 个示例按主题合并重写，而不是逐字复制。迁移对照：
+
+| 源示例 | 本教程章节 |
+| --- | --- |
+| `01-minimal.ts` | s01、s02 |
+| `02-custom-model.ts` | s04 |
+| `03-custom-prompt.ts` | s05 |
+| `04-skills.ts` | s09 |
+| `05-tools.ts` | s03 |
+| `06-extensions.ts` | s06 |
+| `07-context-files.ts` | s05 |
+| `08-prompt-templates.ts` | s10 |
+| `09-api-keys-and-oauth.ts` | s11（不自动执行 OAuth 登录） |
+| `10-settings.ts` | s12 |
+| `11-sessions.ts` | s07 |
+| `12-full-control.ts` | s13 |
+| `13-session-runtime.ts` | s08 |
 
 ## 项目结构
 
@@ -91,7 +114,7 @@ pi-sdk-learn/
     code.ts
   s02_prompt_events/
   ...
-  s08_runtime/
+  s13_full_control/
   src/01-minimal.ts       # 早期入口，保留用于对照
   scripts/check-chapters.mjs
   package.json
@@ -124,4 +147,4 @@ pi-sdk-learn/
 - 哪些状态在 `AgentSession` 中，哪些状态在 `SessionManager` 中？
 - 为什么切换会话后必须重新订阅新的 `runtime.session`？
 
-后续章节会在这 8 章之上继续增加 compaction、subagent、skills、MCP、workflow 和 goal loop；这些能力会以新的章节加入，而不是把第一章变成一个巨型脚本。
+当前 13 章覆盖源仓库的 SDK 示例。compaction、subagent、MCP、workflow 和 goal loop 尚未加入；它们不是以上 13 个示例的现成能力，后续需要按实际公开接口单独设计和验证。
