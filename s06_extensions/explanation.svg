@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="900" viewBox="0 0 1280 900" role="img" aria-labelledby="title desc">
+  <title id="title">s06 扩展生命周期说明图</title>
+  <desc id="desc">展示 Pi 内联扩展如何被资源加载器加载、注册 uppercase 工具，并在 Agent 运行时监听事件和执行工具。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#315b78"/>
+    </marker>
+    <style>
+      .title { font: 700 30px "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; fill: #17324d; }
+      .subtitle { font: 16px "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; fill: #526575; }
+      .heading { font: 700 19px "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; fill: #17324d; }
+      .body { font: 15px "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; fill: #274052; }
+      .code { font: 14px Consolas, "Cascadia Mono", monospace; fill: #203746; }
+      .small { font: 13px "Microsoft YaHei", "Noto Sans CJK SC", sans-serif; fill: #526575; }
+      .box { stroke-width: 2; rx: 12; }
+      .line { stroke: #315b78; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .dashed { stroke: #8a6a32; stroke-width: 2.5; stroke-dasharray: 8 7; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1280" height="900" fill="#f7f9fb"/>
+  <rect x="32" y="28" width="1216" height="844" rx="18" fill="#ffffff" stroke="#d8e2e9" stroke-width="2"/>
+
+  <text x="72" y="78" class="title">s06：扩展挂在生命周期上</text>
+  <text x="72" y="108" class="subtitle">资源加载器负责装载扩展；会话决定哪些工具真正暴露；hook 只观察运行时事件。</text>
+
+  <rect x="72" y="145" width="330" height="235" class="box" fill="#edf5fa" stroke="#7aa6c2"/>
+  <text x="96" y="180" class="heading">① 定义内联扩展</text>
+  <text x="96" y="215" class="code">const lessonExtension = (pi) =&gt; {</text>
+  <text x="112" y="248" class="code">pi.on("agent_start", ...)</text>
+  <text x="112" y="277" class="code">pi.on("tool_call", ...)</text>
+  <text x="112" y="306" class="code">pi.registerTool({ ... })</text>
+  <text x="96" y="347" class="body">监听生命周期，并注册 uppercase 工具。</text>
+
+  <rect x="475" y="145" width="330" height="235" class="box" fill="#f1f7ed" stroke="#8caf79"/>
+  <text x="499" y="180" class="heading">② 加载扩展</text>
+  <text x="499" y="215" class="code">new DefaultResourceLoader({</text>
+  <text x="515" y="244" class="code">extensionFactories: [lessonExtension]</text>
+  <text x="499" y="273" class="code">})</text>
+  <text x="499" y="313" class="code">await resourceLoader.reload()</text>
+  <text x="499" y="347" class="body">reload() 完成发现、装载和注册。</text>
+
+  <rect x="878" y="145" width="330" height="235" class="box" fill="#fff7e9" stroke="#d3ae63"/>
+  <text x="902" y="180" class="heading">③ 创建会话</text>
+  <text x="902" y="215" class="code">createAgentSession({</text>
+  <text x="918" y="244" class="code">resourceLoader,</text>
+  <text x="918" y="273" class="code">tools: ["uppercase"]</text>
+  <text x="902" y="302" class="code">})</text>
+  <text x="902" y="347" class="body">工具已注册，但只有 allowlist 中的工具 active。</text>
+
+  <path d="M402 262 H475" class="line"/>
+  <path d="M805 262 H878" class="line"/>
+  <text x="420" y="247" class="small">extensionFactories</text>
+  <text x="820" y="247" class="small">reload 后可用</text>
+
+  <rect x="72" y="440" width="1136" height="365" class="box" fill="#fbfcfd" stroke="#c9d6df"/>
+  <text x="98" y="478" class="heading">④ 运行时行为：使用 --run 才会产生 Agent 回合</text>
+
+  <rect x="105" y="525" width="215" height="112" class="box" fill="#edf5fa" stroke="#7aa6c2"/>
+  <text x="130" y="560" class="heading">模型回合</text>
+  <text x="130" y="590" class="code">session.prompt(...)</text>
+  <text x="130" y="615" class="small">--run 分支</text>
+
+  <rect x="390" y="525" width="215" height="112" class="box" fill="#f7f0fb" stroke="#ae8bc3"/>
+  <text x="415" y="560" class="heading">生命周期 hook</text>
+  <text x="415" y="590" class="code">agent_start</text>
+  <text x="415" y="615" class="code">tool_call</text>
+
+  <rect x="675" y="525" width="215" height="112" class="box" fill="#fff7e9" stroke="#d3ae63"/>
+  <text x="700" y="560" class="heading">工具执行</text>
+  <text x="700" y="590" class="code">uppercase(text)</text>
+  <text x="700" y="615" class="small">text.toUpperCase()</text>
+
+  <rect x="960" y="525" width="215" height="112" class="box" fill="#f1f7ed" stroke="#8caf79"/>
+  <text x="985" y="560" class="heading">工具结果</text>
+  <text x="985" y="590" class="code">content: [{ text }]</text>
+  <text x="985" y="615" class="code">details: { length }</text>
+
+  <path d="M320 581 H390" class="line"/>
+  <path d="M605 581 H675" class="line"/>
+  <path d="M890 581 H960" class="line"/>
+
+  <path d="M1080 637 V704 H210 V637" class="dashed"/>
+  <text x="480" y="690" class="small">结果回到模型，订阅 message_update/text_delta 后流式打印到终端</text>
+
+  <rect x="105" y="724" width="360" height="52" rx="10" fill="#fff9ef" stroke="#d3ae63"/>
+  <text x="125" y="756" class="body">不带 --run：只打印 active / registered tools</text>
+  <rect x="500" y="724" width="360" height="52" rx="10" fill="#eef7f0" stroke="#8caf79"/>
+  <text x="520" y="756" class="body">带 --run：可能产生真实模型请求和费用</text>
+  <rect x="895" y="724" width="280" height="52" rx="10" fill="#f3f5f7" stroke="#b9c7d0"/>
+  <text x="920" y="756" class="body">finally → session.dispose()</text>
+
+  <text x="72" y="846" class="subtitle">核心边界：扩展负责挂钩和注册能力；Agent loop 仍负责模型、工具协议与结果回传。</text>
+</svg>
