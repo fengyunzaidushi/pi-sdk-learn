@@ -1,0 +1,4 @@
+interface:
+  display_name: "学习测验与答题卡"
+  short_description: "基于指定学习材料生成试卷、交互答题卡并批改薄弱知识点"
+  default_prompt: "使用 $learning-assessment 根据我指定的学习范围生成一份试卷和可勾选答题卡。"
